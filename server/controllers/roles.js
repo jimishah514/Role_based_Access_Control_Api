@@ -35,11 +35,11 @@ const readByRoleName = async (rolename) => {
     }
 }
 
-const readByRoleId = async (rolename) => {
+const readByRoleId = async (roleId) => {
     try {
         const role = await db.roles.findAll({
             where: {
-                name:rolename
+                id : roleId
             }
         })
         return role[0].dataValues.id
@@ -48,6 +48,33 @@ const readByRoleId = async (rolename) => {
     }
 }
 
+const readRoleParentId = async (roleId) => {
+    
+    try {
+        const role = await db.roles.findAll({
+            where: {
+                id : roleId
+            }
+        })
+        return role[0].dataValues.parent
+    }catch(e) {
+        return "error in getting parent"
+    }
+}
+
+const readRoleReprtingLink = async (roleId) => {
+    try {
+        const role = await db.roles.findAll({
+            where: {
+                id : roleId
+            }
+        })
+        return role[0].dataValues.reporting_link
+    }catch(e) {
+        return "error in getting reporting_link"
+    }
+}
 
 
-module.exports = {create,read,readByRoleName,readByRoleId}
+
+module.exports = {create,read,readByRoleName,readByRoleId,readRoleParentId,readRoleReprtingLink}

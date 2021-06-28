@@ -22,22 +22,43 @@ const create = async (req,res) =>{
             res.status(200).send(rolePermsCreate)
         }  
 
-        const rolePermsUpdate = await db.role_perms.update(
-            { 
-                role_id: req.body.roleId,
-                feat_id: req.body.featId,
-                value: req.body.value
-            },
-            {
+    }catch(e){
+        res.status(400).send(e)
+    }
+}
+
+
+const update = async (req,res) => {
+    console.log("Role-Perms -> Create : ",req.body)
+    try {
+        const foundItem = await db.role_perms.findOne({
             where: {
                 role_id: req.body.roleId,
-                feat_id: req.body.featId,
+                feat_id: req.body.featId
             }
-            
         })
-       
-        console.log("role_perms -> rolePermsUpdate: ",rolePermsUpdate)
-        res.status(200).send(rolePermsUpdate)
+
+        console.log("role_perms -> foundItem: ",foundItem)
+
+        if(foundItem) {
+            const rolePermsUpdate = await db.role_perms.update(
+                { 
+                    role_id: req.body.roleId,
+                    feat_id: req.body.featId,
+                    value: req.body.value
+                },
+                {
+                where: {
+                    role_id: req.body.roleId,
+                    feat_id: req.body.featId,
+                }
+                
+            })
+           
+            console.log("role_perms -> rolePermsUpdate: ",rolePermsUpdate)
+            res.status(200).send(rolePermsUpdate)
+        }  
+        
     }catch(e){
         res.status(400).send(e)
     }
@@ -61,16 +82,15 @@ const checkPermitStatus = async (roleId,featId) => {
     console.log("checkPermitStatus -> featId : ",featId)
     try {
         const permitStatus = await db.role_perms.findAll({
-            //attributes: ["value"],
+            attributes: ["value"],
             where: {
                 role_id : roleId,
                 feat_id: featId,
-                value: true
             }
         })
 
-        console.log("permitStatus : ",permitStatus[0].dataValues.id)
-        return permitStatus[0].dataValues.id
+        console.log("permitStatus : ",permitStatus[0].dataValues.value)
+        return permitStatus[0].dataValues.value
     }catch(e) {
         return "error while retreiving permitStatus"
     }

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       user_perms.belongsTo(models.users,{foreignKey: 'user_id'})
       user_perms.belongsTo(models.scope,{foreignKey: 'scope_id'})
       user_perms.belongsTo(models.roles,{foreignKey: 'role_id'})
-      user_perms.belongsTo(models.users,{foreignKey: 'manager_Id'});
+      user_perms.belongsTo(models.users,{foreignKey: 'manager_id'});
     }
   };
   user_perms.init({

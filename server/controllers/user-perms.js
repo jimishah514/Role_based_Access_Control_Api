@@ -1,15 +1,49 @@
 const db = require('../../models')
-
+const rolesController = require("../controllers/roles")
 
 const create = async (req,res) => {
     try {
-        const user_perms = await db.user_perms.findOrCreate({
-            where : {
+        console.log("user-perms create : ",req.body)
+        const userPerms = await db.user_perms.findAll({
+            where: {
                 user_id:req.body.userId,
-                role_id:req.body.roleId,
-                scope_id:req.body.scopeId,
+                scope_id:req.body.scopeId
             }
         })
+        console.log("user-perms userPerms.length  : ",userPerms.length )
+        if(userPerms.length == 0) {
+            console.log("user-perms userPerms.length if : ",userPerms.length )
+            const user_perms = await db.user_perms.create({
+                    user_id:req.body.userId,
+                    role_id:req.body.roleId,
+                    manager_id: req.body.managerId,
+                    scope_id:req.body.scopeId
+            })
+            res.send(user_perms)
+        }
+
+        res.send(user_perms)
+    }catch(e) {
+        res.send(e)
+    }
+}
+
+
+const update = async (req,res) => {
+    try {
+        console.log("user-perms update : ",req.body)
+        
+            const user_perms = await db.user_perms.update({
+                    user_id:req.body.userId,
+                    role_id:req.body.roleId,
+                    manager_id: req.body.managerId,
+                    scope_id:req.body.scopeId,
+            },{
+                where : {
+                    id: req.body.userPermsId
+                }
+            })
+
         res.send(user_perms)
     }catch(e) {
         res.send(e)
@@ -136,17 +170,16 @@ const read = async (req,res) => {
 }
 
 
-const readSpecific = async (userId,rolePermsId) => {
+const readSpecific = async (userId) => {
     console.log("user_perms -> userId : ",userId)
-    console.log("user_perms -> rolePermsId : ",rolePermsId)
     try {
-        const user_perms = await db.user_perms.findAll({
+        const user_perms = await db.user_perms.findOne({
             where: {
-                user_id : userId,
-                role_permissions_id : rolePermsId,
+                user_id : userId
             }
         })
-        return user_perms[0].dataValues.id
+        console.log("user_perms -> user_perms : ",user_perms.dataValues)
+        return user_perms.dataValues.role_id
     }catch(e){
         return false
     } 
@@ -170,17 +203,18 @@ const readByIds = async (req,res) => {
 }
 
 
-const readUserManagersByDirect = async (roleId) => {
+const readUserManagersByDirect = async (req,res) => {
+    console.log("readUserManagersByDirect : ",req.body.roleId)
 
     try {
-        const parentRoleId = await db.roles.readByRoleId(roleId)
+        const parentRoleId = await rolesController.readRoleParentId(req.body.roleId)
         const user_perms = await db.user_perms.findAll({
             where: {
                 role_id : parentRoleId
             }
         })
-        console.log("readUserManagersByDirect : ",user_perms[0].dataValues)
-        res.send(user_perms[0].dataValues)
+        console.log("readUserManagersByDirect : ",user_perms)
+        res.send(user_perms)
     }catch(e){
         return false
     }
@@ -226,4 +260,4 @@ const destroy = async (req,res) => {
     }
 }
 
-module.exports = {create,read,readSpecific,readByIds,destroy, createUpdated,readUserManagersByDirect,readUserManagersByRZA}
+module.exports = {create,update,read,readSpecific,readByIds,destroy, createUpdated,readUserManagersByDirect,readUserManagersByRZA}

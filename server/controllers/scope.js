@@ -54,7 +54,9 @@ const readScopeById = async (scopeId) => {
     }
 }
 
-const readScopeByRole = async (userId,roleId) => {
+const readScopeByRoleId = async (userId,roleId) => {
+    console.log("userId : ",userId)
+    console.log("roleId : ",roleId)
     try {
         const scope = await db.user_perms.findAll({
             where: {
@@ -62,7 +64,8 @@ const readScopeByRole = async (userId,roleId) => {
                 role_id : roleId
             }
         })
-        return scope[0].dataValues.id
+        console.log("readScopeByRoleId scope: ",scope)
+        return scope
     }catch(e){
         res.send(e)
     }
@@ -77,4 +80,4 @@ const readLimited = async (req,res) => {
     } 
 }
 
-module.exports = { create,read,readSpecific}
+module.exports = { create,read,readSpecific,readScopeByRoleId}

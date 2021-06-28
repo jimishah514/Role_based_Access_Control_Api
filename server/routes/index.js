@@ -26,6 +26,7 @@ router.post('/role-perms',rolePermsController.create)
 router.get('/role-perms',rolePermsController.read)
 
 router.post('/user-perms',userPermsController.create)
+router.put('/user-perms',userPermsController.update)
 router.get('/user-perms',userPermsController.read)
 router.get('/user-perms-specific',userPermsController.readByIds)
 router.delete('/user-perms',userPermsController.destroy)
@@ -35,6 +36,9 @@ router.post('/user-perms-updated',userPermsController.createUpdated)
 
 router.post('/reporting-link',reportingLinkController.create)
 router.get('/reporting-links',reportingLinkController.read)
+
+router.get('/userManagersByDirect',userPermsController.readUserManagersByDirect)
+
 
 
 router.get('/check-perms',checkPermsController.checkPermission)
