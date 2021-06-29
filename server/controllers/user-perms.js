@@ -61,41 +61,9 @@ const createUpdated = async (req,res) => {
             }
         })
 
-       // console.log("user-perms -> user_role_perms : ",user_role_perms)
-
-      
-        // let user_perms = []
-        // user_role_perms.forEach(async (dataValue,i) => {
-        //     console.log("user-perms -> dataValue : ",dataValue)
-        //     console.log("user-perms -> dataValue.userPermsId : ",dataValue.id)
-
-        //     const user_perm = await db.user_perms.findOrCreate({
-        //         where: {
-        //             user_id: req.body.userId,
-        //             role_permissions_id: dataValue.id,
-        //             scope_id: req.body.scopeId,
-        //             reporting_link: req.body.reportingLink
-        //         }
-        //     })
-        //     console.log("user-perms -> user_perm : ",user_perm)
-        //     user_perms[i]=user_perm[0].dataValues
-        //     console.log("user-perms -> user_perms[",i,"] : ",user_perms)
-        // })
-
         const user_perms = await addUserPerms(req,user_role_perms)
-
-
         console.log("user-perms -> user_perms : ",user_perms)
 
-
-        // const user_perms = await db.user_perms.findOrCreate({
-        //     where : {
-        //         user_id:req.body.userId,
-        //         role_permissions_id:req.body.rolePermissionsId,
-        //         scope_id:req.body.scopeId,
-        //         reporting_link:req.body.reportingLink
-        //     }
-        // })
         res.send(user_perms)
     }catch(e) {
         console.log("Error : ",e)
@@ -106,38 +74,22 @@ const createUpdated = async (req,res) => {
 const addUserPerms = async (req) => {
     console.log("<<<req.body>>>: ",req.body)
     console.log("<<<req.body>>>user_role_perms: ",user_role_perms)
-    // scope = []
-    // req.body.scopeId.forEach((scope,i) => {
-    //     scope[i]= scope;
-    // })
-    // console.log("Scope : ",scope)
     status = "ALready Exist"
     const user_perms_promises = user_role_perms.map(async (item) => {
         console.log("<<<Map>>>: ",item)
 
         try {
-            // const user_perm = await db.user_perms.findOrCreate({
-            //     where: {
-            //         user_id: req.body.userId,
-            //         role_permissions_id: item.dataValues.id,
-            //     },
-            //     scope_id: req.body.scopeId,
-            // })
-            // if(!user_perm[1]) status = "Already Exist"
-
             const user_perm = await db.user_perms.findAll({
                 where: {
                     user_id: req.body.userId,
                     role_permissions_id: item.dataValues.id,
                 }
             })
-            //console.log("user-user_perm *********** -> user_perm : ",user_perm)
             
             if(!user_perm.length)  {
                 console.log("<<<Map>>>item.dataValues.id: ",item.dataValues.id)
                 console.log("<<<Map>>> item.dataValues.id: ", item.dataValues.id)
                 const user_perm2 = await db.user_perms.create({
-                    
                         user_id: req.body.userId,
                         role_permissions_id: item.dataValues.id,
                         scope_id: req.body.scopeId,
@@ -253,7 +205,6 @@ const destroy = async (req,res) => {
                 }
             })
         }
-       /// console.log("userRole : ",userRole)
         res.sendStatus(200)
     }catch(e){
         res.sendStatus(500)
