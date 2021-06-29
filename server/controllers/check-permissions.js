@@ -21,7 +21,7 @@ const checkPermission = async (req,res) => {
         if(status) {
             console.log("checkPermissions -> status IF: ",status)
             // HOW to get Scope to check it with user's scope????? where to get scope???
-            const userScope = await scopeController.readRoleParentId(req.body.userId,roleId)
+            const userScope = await scopeController.readScopeByRoleId(req.body.userId,roleId)
             console.log("checkPermissions -> userScope : ",userScope)
             console.log("checkPermitStatus ->  Status: true" )
             const scopeId = userScope.find(scope => {
