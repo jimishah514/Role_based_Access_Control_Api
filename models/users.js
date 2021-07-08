@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.user_perms,{foreignKey: 'user_id'})
-      this.hasMany(models.user_perms,{foreignKey: 'manager_id'})
+      this.hasMany(models.userPermissions,{foreignKey: 'user_id'})
+      this.hasMany(models.userPermissions,{foreignKey: 'manager_id'})
     }
   };
   users.init({

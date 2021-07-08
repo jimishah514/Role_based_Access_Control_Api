@@ -58,7 +58,7 @@ const readScopeByRoleId = async (userId,roleId) => {
     console.log("userId : ",userId)
     console.log("roleId : ",roleId)
     try {
-        const scope = await db.user_perms.findAll({
+        const scope = await db.userPermissions.findAll({
             where: {
                 user_id : userId,
                 role_id : roleId

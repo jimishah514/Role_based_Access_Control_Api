@@ -1,8 +1,8 @@
 {
-  "name": "role_based_access_control_api",
+  "name": "role-based-controll-access",
   "version": "1.0.0",
   "description": "it is a simple nodejs  api to acheive role-bases access control modul ",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
     "start:dev": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -4,17 +4,17 @@ const rolePerms = {
     create : async (req,res) =>{
         console.log("Role-Perms -> Create : ",req.body)
         try {
-            const foundItem = await db.role_perms.findOne({
+            const foundItem = await db.rolePermissions.findOne({
                 where: {
                     role_id: req.body.roleId,
                     feat_id: req.body.featId
                 }
             })
     
-            console.log("role_perms -> foundItem: ",foundItem)
+            console.log("rolePermissions -> foundItem: ",foundItem)
     
             if(!foundItem) {
-                const rolePermsCreate = await db.role_perms.create({
+                const rolePermsCreate = await db.rolePermissions.create({
                         role_id: req.body.roleId,
                         feat_id: req.body.featId,
                         value: req.body.value
@@ -31,17 +31,17 @@ const rolePerms = {
     update : async (req,res) => {
         console.log("Role-Perms -> Create : ",req.body)
         try {
-            const foundItem = await db.role_perms.findOne({
+            const foundItem = await db.rolePermissions.findOne({
                 where: {
                     role_id: req.body.roleId,
                     feat_id: req.body.featId
                 }
             })
     
-            console.log("role_perms -> foundItem: ",foundItem)
+            console.log("rolePermissions -> foundItem: ",foundItem)
     
             if(foundItem) {
-                const rolePermsUpdate = await db.role_perms.update(
+                const rolePermsUpdate = await db.rolePermissions.update(
                     { 
                         role_id: req.body.roleId,
                         feat_id: req.body.featId,
@@ -55,7 +55,7 @@ const rolePerms = {
                     
                 })
                
-                console.log("role_perms -> rolePermsUpdate: ",rolePermsUpdate)
+                console.log("rolePermissions -> rolePermsUpdate: ",rolePermsUpdate)
                 res.status(200).send(rolePermsUpdate)
             }  
             
@@ -66,7 +66,7 @@ const rolePerms = {
     ,
     read : async (req,res) =>{
         try {
-            const rolePerms = await db.role_perms.findAll({
+            const rolePerms = await db.rolePermissions.findAll({
                 include: [
                     db.roles,db.features
                 ]
@@ -79,7 +79,7 @@ const rolePerms = {
     ,
     checkPermitStatus :async (roleId,featId) => {
         try {
-            const permitStatus = await db.role_perms.findAll({
+            const permitStatus = await db.rolePermissions.findAll({
                 attributes: ["value"],
                 where: {
                     role_id : roleId,

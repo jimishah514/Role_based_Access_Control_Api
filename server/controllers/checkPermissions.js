@@ -1,10 +1,9 @@
 const db = require("../../models")
-const rolesController = require("../controllers/roles")
-const scopeController = require("../controllers/scope")
-const rolePermsController = require("../controllers/role-perms")
-const userPermsController = require("../controllers/user-perms")
-const featureController = require("../controllers/features")
-
+const rolesController = require("./roles")
+const scopeController = require("./scope")
+const rolePermsController = require("./rolePerms")
+const userPermsController = require("./userPerms")
+const featureController = require("./features")
 
 const checkPermission = async (req,res) => {
     try {
@@ -18,7 +17,6 @@ const checkPermission = async (req,res) => {
         if(!featId) {
             res.send("No featId Exist for this action and resourceType")
         }
-        
         const status = await rolePermsController.checkPermitStatus(roleId,featId)
         console.log("checkPermissions -> status : ",status)
         let permitStatus =false;
@@ -40,13 +38,10 @@ const checkPermission = async (req,res) => {
                 )
                 console.log("checkPermissions -> scopeId : ",scopeId)
             if(scopeId) permitStatus = true
-
         }
-        res.send(permitStatus)
-        
+        res.send(permitStatus)   
     }catch(e) {
         res.send(e)
     }
 }
-
 module.exports = { checkPermission}

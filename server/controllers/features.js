@@ -39,7 +39,7 @@ const readSpecific = async (action,resourceType) => {
         })
         return feature.dataValues.id
     }catch(e) {
-        return "error in getting featureId"
+        return false
     }
 }
 

@@ -3,7 +3,7 @@ const db = require('../../models')
 
 const create = async (req,res) => {
     try {
-        const reportingLink = await db.reporting_links.findOrCreate({
+        const reportingLink = await db.reportingLinks.findOrCreate({
             where: {
                 name: req.body.name
             }
@@ -18,7 +18,7 @@ const create = async (req,res) => {
 
 const read = async (req,res) => {
     try {
-        const reportingLinks = await db.reporting_links.findAll()
+        const reportingLinks = await db.reportingLinks.findAll()
         res.send(reportingLinks)
 
     }catch(e){
